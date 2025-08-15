@@ -5,8 +5,6 @@ import type {
 } from "../types/coffeeTypes";
 import { devtools } from "zustand/middleware";
 
-const BASE_URL = "https://purpleschool.ru/coffee-api";
-
 type CoffeeState = {
   coffeeList?: CoffeeType[];
   controller?: AbortController;
@@ -39,9 +37,12 @@ const coffeeSlice: StateCreator<CoffeeStore, [["zustand/devtools", never]]> = (
         searchParams.append("text", params.text);
       }
 
-      const response = await fetch(`${BASE_URL}?${searchParams.toString()}`, {
-        signal,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}?${searchParams.toString()}`,
+        {
+          signal,
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch coffee list");
       }
