@@ -1,7 +1,9 @@
+// is not used - it is an example of subscription to the store
+
 import { create, type StateCreator } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
-import { getCoffeeList } from "./coffeeStore";
 import { hashStorage } from "../helpers/hashStorage";
+import { getCoffeeList } from "./coffeeStore";
 
 type SearchState = {
   searchText?: string;
