@@ -8,10 +8,12 @@ import { devtools } from "zustand/middleware";
 type CoffeeState = {
   coffeeList?: CoffeeType[];
   controller?: AbortController;
+  params: GetCoffeeListRequestParams;
 };
 
 type CoffeeActions = {
   getCoffeeList: (params?: GetCoffeeListRequestParams) => Promise<void>;
+  setParams: (params?: GetCoffeeListRequestParams) => void;
 };
 
 type CoffeeStore = CoffeeState & CoffeeActions;
@@ -22,6 +24,9 @@ const coffeeSlice: StateCreator<CoffeeStore, [["zustand/devtools", never]]> = (
 ) => ({
   coffeeList: undefined,
   controller: undefined,
+  params: {
+    text: undefined,
+  },
   getCoffeeList: async (params) => {
     try {
       const { controller } = get();
@@ -59,8 +64,24 @@ const coffeeSlice: StateCreator<CoffeeStore, [["zustand/devtools", never]]> = (
       console.error("Error fetching coffee list:", error);
     }
   },
+  setParams: (newParams) => {
+    const { params, getCoffeeList } = get();
+    set(
+      {
+        params: {
+          ...params,
+          ...newParams,
+        },
+      },
+      false,
+      "setParams"
+    );
+    getCoffeeList(params);
+  },
 });
 
 export const useCoffeeStore = create<CoffeeStore>()(
   devtools(coffeeSlice, { name: "CoffeeStore" })
 );
+
+export const getCoffeeList = useCoffeeStore.getState().getCoffeeList;

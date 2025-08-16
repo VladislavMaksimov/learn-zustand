@@ -4,15 +4,17 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useCoffeeStore } from "./model/coffeeStore";
 import { useEffect, useState } from "react";
 import { useOrdersStore } from "./model/orderStore";
+import { useUrlStorage } from "./helpers/useUrlStorate";
 
 function App() {
-  const [searchText, setSearchText] = useState("");
   const [address, setAddress] = useState("");
 
-  const { coffeeList, getCoffeeList } = useCoffeeStore();
+  const { coffeeList, params, getCoffeeList, setParams } = useCoffeeStore();
   useEffect(() => {
-    getCoffeeList({ text: searchText });
-  }, [getCoffeeList, searchText]);
+    getCoffeeList(params);
+  }, [getCoffeeList, params]);
+
+  useUrlStorage(params, setParams);
 
   const { orders, addOrder, clearOrders, makeOrder } = useOrdersStore();
 
@@ -20,9 +22,9 @@ function App() {
     <div className="wrapper">
       <Input
         placeholder="поиск"
-        value={searchText}
+        value={params.text}
         onChange={(event) => {
-          setSearchText(event.target.value);
+          setParams({ text: event.target.value });
         }}
       />
       <div style={{ display: "flex" }}>
