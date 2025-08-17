@@ -1,34 +1,14 @@
-import { Input } from "antd";
 import "./App.css";
-import { useEffect } from "react";
-import { useUrlStorage } from "./helpers/useUrlStorate";
-import { CoffeeCard } from "./components/CoffeeCard";
 import { Cart } from "./components/Cart";
-import { useCoffeeStore } from "./model/coffeeStore";
+import { SearchInput } from "./components/SearchInput";
+import { CardList } from "./components/CardList";
 
 function App() {
-  const { coffeeList, params, getCoffeeList, setParams } = useCoffeeStore();
-  useEffect(() => {
-    getCoffeeList(params);
-  }, [getCoffeeList, params]);
-
-  useUrlStorage(params, setParams);
-
   return (
     <div className="wrapper">
-      <Input
-        placeholder="поиск"
-        value={params.text}
-        onChange={(event) => {
-          setParams({ text: event.target.value });
-        }}
-      />
+      <SearchInput />
       <div style={{ display: "flex" }}>
-        <div className="cardsContainer">
-          {coffeeList?.map((coffee) => (
-            <CoffeeCard key={coffee.id} coffee={coffee} />
-          ))}
-        </div>
+        <CardList />
         <Cart />
       </div>
     </div>

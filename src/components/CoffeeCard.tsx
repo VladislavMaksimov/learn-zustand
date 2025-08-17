@@ -2,14 +2,13 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Card, Button, Tag, Rate } from "antd";
 import { type FC } from "react";
 import type { CoffeeType } from "../types/coffeeTypes";
-import { useCoffeeStore } from "../model/coffeeStore";
+import { addOrder } from "../model/coffeeStore";
 
 interface CoffeeCardProps {
   coffee: CoffeeType;
 }
 
 export const CoffeeCard: FC<CoffeeCardProps> = ({ coffee }) => {
-  const { addOrder } = useCoffeeStore();
   return (
     <Card
       key={coffee.id}

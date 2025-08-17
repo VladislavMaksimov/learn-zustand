@@ -26,3 +26,8 @@ export const useCoffeeStore = create<ListSlice & OrderSlice>()(
 );
 
 export const getCoffeeList = useCoffeeStore.getState().getCoffeeList;
+export const setParams = useCoffeeStore.getState().setParams;
+export const addOrder = useCoffeeStore.getState().addOrder;
+export const clearOrders = useCoffeeStore.getState().clearOrders;
+export const addAddress = useCoffeeStore.getState().addAddress;
+export const makeOrder = useCoffeeStore.getState().makeOrder;

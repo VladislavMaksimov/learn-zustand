@@ -1,9 +1,16 @@
 import { Input, Button } from "antd";
-import { useCoffeeStore } from "../model/coffeeStore";
+import {
+  addAddress,
+  clearOrders,
+  makeOrder,
+  useCoffeeStore,
+} from "../model/coffeeStore";
+import { useShallow } from "zustand/shallow";
 
 export const Cart = () => {
-  const { orders, address, clearOrders, makeOrder, addAddress } =
-    useCoffeeStore();
+  const [orders, address] = useCoffeeStore(
+    useShallow((state) => [state.orders, state.address])
+  );
 
   return (
     <aside className="cart">
