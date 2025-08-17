@@ -14,12 +14,14 @@ export const SearchInput = () => {
   useUrlStorage(params, setParams);
 
   return (
-    <Input
-      placeholder="поиск"
-      value={params.text}
-      onChange={(event) => {
-        setParams({ text: event.target.value });
-      }}
-    />
+    <>
+      <Input
+        placeholder="поиск"
+        value={params.text}
+        onChange={(event) => {
+          setParams({ text: event.target.value });
+        }}
+      />
+    </>
   );
 };

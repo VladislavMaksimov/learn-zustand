@@ -23,8 +23,10 @@ export const listSlice: StateCreator<
       set({ controller: newController });
 
       const searchParams = new URLSearchParams();
-      if (params && params.text) {
-        searchParams.append("text", params.text);
+      for (const key in params) {
+        const paramsKey = key as keyof typeof params;
+        if (!params[paramsKey]) continue;
+        searchParams.set(key, params[paramsKey]);
       }
 
       const response = await fetch(
