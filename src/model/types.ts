@@ -5,13 +5,12 @@ import type {
 import type { OrderItem, OrderCoffeeResponse } from "../types/orderTypes";
 
 export type OrderState = {
-  currentId: number;
   orders: OrderItem[];
   address: string;
 };
 
 type OrderActions = {
-  addOrder: (order: Omit<OrderItem, "id">) => void;
+  addOrder: (order: OrderItem) => void;
   clearOrders: VoidFunction;
   makeOrder: () => Promise<OrderCoffeeResponse>;
   addAddress: (address: string) => void;

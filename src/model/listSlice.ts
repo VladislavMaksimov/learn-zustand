@@ -3,8 +3,8 @@ import type { ListSlice, OrderSlice } from "./types";
 
 export const listSlice: StateCreator<
   OrderSlice & ListSlice,
-  [["zustand/devtools", never], ["zustand/persist", unknown]],
-  [["zustand/devtools", never], ["zustand/persist", unknown]],
+  [],
+  [],
   ListSlice
 > = (set, get) => ({
   coffeeList: undefined,
@@ -44,8 +44,7 @@ export const listSlice: StateCreator<
         {
           coffeeList: data,
         },
-        false,
-        "getCoffeeList"
+        false
       );
     } catch (error) {
       console.error("Error fetching coffee list:", error);
@@ -60,8 +59,7 @@ export const listSlice: StateCreator<
           ...newParams,
         },
       },
-      false,
-      "setParams"
+      false
     );
     getCoffeeList(params);
   },

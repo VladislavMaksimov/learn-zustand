@@ -2,47 +2,47 @@ import { type StateCreator } from "zustand";
 import type {
   OrderCoffeeRequestParams,
   OrderCoffeeResponse,
-  OrderItem,
 } from "../types/orderTypes";
 import type { OrderSlice, ListSlice, OrderState } from "./types";
+import { produce } from "immer";
 
 const ORDERS_URL = `${import.meta.env.VITE_BASE_URL}/order`;
 
 const INITIAL_STATE: OrderState = {
   orders: [],
   address: "",
-  currentId: 1,
 };
 
 export const ordersSlice: StateCreator<
   OrderSlice & ListSlice,
-  [["zustand/devtools", never], ["zustand/persist", unknown]],
-  [["zustand/devtools", never], ["zustand/persist", unknown]],
+  [],
+  [],
   OrderSlice
 > = (set, get) => ({
   ...INITIAL_STATE,
   addOrder: (order) => {
-    const { currentId } = get();
     set(
-      (state) => {
-        const newOrder: OrderItem = {
-          ...order,
-          id: currentId,
-        };
-        return {
-          orders: [...state.orders, newOrder],
-          currentId: currentId + 1,
-        };
-      },
-      false,
-      "addOrder"
+      produce<OrderState>((draft) => {
+        if (!draft.orders) {
+          draft.orders = [];
+        }
+        const itemIndex = draft.orders.findIndex(
+          (item) => item.id === order.id
+        );
+        if (itemIndex !== -1) {
+          draft.orders[itemIndex].quantity += order.quantity;
+          return;
+        }
+        draft.orders.push(order);
+      }),
+      false
     );
   },
   addAddress: (address) => {
-    set({ address }, false, "addAddress");
+    set({ address }, false);
   },
   clearOrders: () => {
-    set(INITIAL_STATE, false, "clearOrders");
+    set(INITIAL_STATE, false);
   },
   makeOrder: () => {
     const { address, orders } = get();
@@ -65,7 +65,7 @@ export const ordersSlice: StateCreator<
         return response.json() as Promise<OrderCoffeeResponse>;
       })
       .then((data: OrderCoffeeResponse) => {
-        set(INITIAL_STATE, false, "makeOrder");
+        set(INITIAL_STATE, false);
         return data;
       })
       .catch((error) => {

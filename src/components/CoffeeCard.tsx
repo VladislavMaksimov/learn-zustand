@@ -18,6 +18,7 @@ export const CoffeeCard: FC<CoffeeCardProps> = ({ coffee }) => {
           icon={<ShoppingCartOutlined />}
           onClick={() => {
             addOrder({
+              id: coffee.id,
               name: coffee.name,
               size: "L",
               quantity: 1,

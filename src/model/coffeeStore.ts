@@ -3,14 +3,15 @@ import { devtools, persist } from "zustand/middleware";
 import type { ListSlice, OrderSlice } from "./types";
 import { listSlice } from "./listSlice";
 import { ordersSlice } from "./orderSlice";
+import { immer } from "zustand/middleware/immer";
 
 export const useCoffeeStore = create<ListSlice & OrderSlice>()(
   devtools(
     persist(
-      (...args) => ({
+      immer((...args) => ({
         ...listSlice(...args),
         ...ordersSlice(...args),
-      }),
+      })),
       {
         name: "CoffeeStore",
         partialize: (state) => ({
